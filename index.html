@@ -1,0 +1,75 @@
+<!-- CSS  naming convention: BEM -->
+<!-- JS naming convention: lowrCamelCase -->
+<!-- HTML naming convention: kebab-case -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Finder(S.Mahdi Mirfendereski)</title>
+    <!-- Mayer web css reset applied -->
+    <link rel="stylesheet" href="style/reset.css">
+
+    <!-- Core styles applied -->
+    <link rel="stylesheet" href="style/style.css">
+
+</head>
+
+<body>
+    <div class="error" id="error"></div>
+    <section class="container">
+        <div class="sec">
+            <h2 class="section_header">Mr. or Ms. ?</h2>
+            <form name="frm">
+
+                <div class="form">
+                    <label id="user-field">
+                    name:
+                    <input name="fname" type="text">
+                </label>
+                    <input type="radio" class="form" id="genM" name="gender" value="Male">
+                    <label for="Male">Male</label><br>
+                    <input type="radio" class="form" id="genF" name="gender" value="Female">
+                    <label for="Female">Female</label><br>
+                    <div class="form">
+                        <input id="request" name="button" onclick="submitRequest()" class="search_wrapper__button" type="button" value="Submit">
+                    </div>
+                    <div class="form">
+                        <input id="request" name="button" onclick="saveRequest()" class="search_wrapper__button" type="button" value="Save">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sec">
+            <h2 class="section_header" id="prediction">Prediction</h2>
+            <p id="">
+                Requested name: <span id="reqName"></span>
+            </p>
+            <p id="">
+                Gender: <span id="gender"></span>
+            </p>
+            <p id="">
+                Probability: <span id="prob"></span>
+            </p>
+            <div id="savedName" class="savedAnswer" style="border: solid">
+                <h3>Saved Answer</h3>
+                <br>
+                <p id="">
+                    Requested name: <span id="SavedreqName"></span>
+                </p>
+                <p id="">
+                    Gender: <span id="Savedgender"></span>
+                </p>
+                <br>
+                <button id="clear" onclick="clearStoredName()">clear</button>
+            </div>
+        </div>
+
+    </section>
+    <!-- <div id="notifier" class="notify"><span id="notifyType" class=""></span></div> -->
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
