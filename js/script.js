@@ -2,7 +2,7 @@ const ErrInvalidNameLength0 = "Name must not be empty."
 const ErrInvalidNameLength255 = "Name must be at most 255 characters."
 const ErrInvalidNameChar = "Name must contain only letters or spaces."
 const UserInfoEndpoint = "https://api.genderize.io/?name="
-const ErrFetchingInfo = "something went wrong :( "
+const ErrFetchingInfo = "something went wrong."
 const GenderInfo = "(name => gender) saved."
 const invalidGenderInfo = "Invalid Gender."
 const ErrNameNotFound = "Name Not Found."
@@ -10,20 +10,30 @@ const RestoreCache = "restore data from cache"
 const RemoveCache = "remove data from cache"
 
 
+
+//Clear cache when refreshing
 window.localStorage.clear();
 
+
+
+/*
+    call submitRequest when click on submit.
+    1. unchecked radio button.
+    2. restore name's gender from localstorage 
+    3. send requst
+    4. set the relevant info
+*/
 function submitRequest() {
+    // 1.
     let radio = document.querySelector('input[type=radio][name=gender]:checked');
     if (radio)
         radio.checked = false;
 
+    // 2.
     document.getElementById("savedName").style.visibility = "hidden";
-
-    let name = validateUsername(document.forms["frm"]["fname"].value);
-
+    let name = validateName(document.forms["frm"]["fname"].value);
     if (!name)
         return false;
-
     restore = restoreFromCache(name);
     if (restore) {
         clearInfo();
@@ -31,12 +41,13 @@ function submitRequest() {
         document.getElementById("savedName").style.visibility = "visible";
     }
 
+    // 3.
     const infoReq = new XMLHttpRequest();
     let url = UserInfoEndpoint + name;
     infoReq.open("GET", url);
     infoReq.send();
-
     infoReq.onreadystatechange = () => {
+        // 4.
         if (!isSuccessful(infoReq.status)) {
             if (infoReq.status === 404) {
                 notify(ErrNameNotFound);
@@ -50,6 +61,7 @@ function submitRequest() {
 }
 
 
+
 /*
     call saveRequest when click on save.
     1. if radio button is checked: save radio button value for name input value(current value in form).
@@ -59,24 +71,20 @@ function saveRequest() {
     let gender = document.forms["frm"]["gender"].value;
     let myStorage = window.localStorage;
 
-    // 1
+    // 1.
     if (gender) {
-        // console.log("saved.");
-        let name = validateUsername(document.forms["frm"]["fname"].value);
+        let name = validateName(document.forms["frm"]["fname"].value);
         if (!name)
             return false;
         myStorage.setItem(name, gender);
-
-
-    } else {
-        // 2
+    }
+    // 2.
+    else {
         let nameT = document.getElementById("reqName").innerHTML;
-        if (!validateUsername(nameT)) {
+        if (!validateName(nameT)) {
             return false;
         }
         let genderT = document.getElementById("gender").innerHTML;
-        console.log(genderT);
-
         if (genderT != "male" && genderT != "female") {
             notify(invalidGenderInfo);
             return false;
@@ -88,7 +96,25 @@ function saveRequest() {
 
 
 
-function validateUsername(name) {
+
+/*
+    call clearStoredName when click on clear.
+    it remove name item that displayed on saved Answer(so existed.)
+*/
+function clearStoredName() {
+    let myStorage = window.localStorage;
+    let name = validateName(document.forms["frm"]["fname"].value);
+    if (!name)
+        return false;
+    notify(RemoveCache)
+    myStorage.removeItem(name);
+}
+
+
+/*
+    validate a given name based on letters,space and length(1,255)
+*/
+function validateName(name) {
     var regEx = /^[a-z][a-z\s]*$/;
     if (name == null || name == "") {
         notify(ErrInvalidNameLength0);
@@ -112,6 +138,12 @@ function isSuccessful(status) {
     return status / 100 === 3 || status / 100 === 2;
 }
 
+
+/************************************************* WORKING WITH LOCALSTORAGE *************************************************/
+
+/*
+    restore item from cache
+*/
 function restoreFromCache(name) {
     let myStorage = window.localStorage;
     const record = myStorage.getItem(name)
@@ -125,26 +157,38 @@ function restoreFromCache(name) {
 
 
 
+/************************************************* SET INFO IN index.html *************************************************/
+
+
+/*
+    set prediction info when get valid json response 
+*/
 function setInfo(info) {
     document.getElementById("reqName").innerHTML = info['name'];
     document.getElementById("gender").innerHTML = info['gender'];
     document.getElementById("prob").innerHTML = info['probability'];
 }
 
-
+/*
+    set saved answer info when its gender exists 
+*/
 function setSavedInfo(name, gender) {
     document.getElementById("SavedreqName").innerHTML = name;
     document.getElementById("Savedgender").innerHTML = gender;
-    // document.getElementById("Savedprob").innerHTML = "Probability: " + info['probability'];
 }
 
+/*
+    clear prediction info
+*/
 function clearInfo() {
     document.getElementById("reqName").innerHTML = "Requested name: ";
     document.getElementById("gender").innerHTML = "Gender: ";
     document.getElementById("prob").innerHTML = "Probability: ";
 }
 
-
+/*
+    notify what happened based on action
+*/
 function notify(message) {
     document.getElementById("notifier").style.height = "5%";
     document.getElementById("notifyType").innerHTML = message;
@@ -153,29 +197,3 @@ function notify(message) {
         document.getElementById("notifier").style.height = "0";
     }, 5000);
 }
-
-function compare(a, b) {
-    return a[Updated].localeCompare(b[Updated])
-}
-
-
-function clearStoredName() {
-    let myStorage = window.localStorage;
-    let name = validateUsername(document.forms["frm"]["fname"].value);
-    if (!name)
-        return false;
-    notify(RemoveCache)
-    myStorage.removeItem(name);
-}
-
-
-function notify(message) {
-    document.getElementById("notifier").style.height = "5%";
-    document.getElementById("notifyType").innerHTML = message;
-
-    setTimeout(function() {
-        document.getElementById("notifier").style.height = "0";
-    }, 5000);
-}
-
-// used for remove cache in refresh
