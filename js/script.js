@@ -1,14 +1,16 @@
-const ErrInvalidUsername = "username must be at least 4 characters"
-const ErrUsernameNotFound = "username doesnt exist"
-const Cache = "loading data from cache"
-const ErrFetchingInfo = "something went wrong :( "
-const ErrFetchingRepos = "could not fetch repos :( "
+const ErrInvalidNameLength0 = "Name must not be empty."
+const ErrInvalidNameLength255 = "Name must be at most 255 characters."
+const ErrInvalidNameChar = "Name must contain only letters or spaces."
 const UserInfoEndpoint = "https://api.genderize.io/?name="
-const Updated = "updated_at"
-const RepoCount = 5
-const Lng = "language"
-const Star = "stargazers_count"
+const ErrFetchingInfo = "something went wrong :( "
+const GenderInfo = "(name => gender) saved."
+const invalidGenderInfo = "Invalid Gender."
+const ErrNameNotFound = "Name Not Found."
+const RestoreCache = "restore data from cache"
+const RemoveCache = "remove data from cache"
 
+
+window.localStorage.clear();
 
 function submitRequest() {
     let radio = document.querySelector('input[type=radio][name=gender]:checked');
@@ -27,8 +29,6 @@ function submitRequest() {
         clearInfo();
         setSavedInfo(name, restore);
         document.getElementById("savedName").style.visibility = "visible";
-        // return true;
-
     }
 
     const infoReq = new XMLHttpRequest();
@@ -39,8 +39,8 @@ function submitRequest() {
     infoReq.onreadystatechange = () => {
         if (!isSuccessful(infoReq.status)) {
             if (infoReq.status === 404) {
-                notify(ErrUsernameNotFound);
-                return false;
+                notify(ErrNameNotFound);
+                // return false;
             }
             notify(ErrFetchingInfo + infoReq.status)
         }
@@ -58,31 +58,32 @@ function submitRequest() {
 function saveRequest() {
     let gender = document.forms["frm"]["gender"].value;
     let myStorage = window.localStorage;
-    let name = validateUsername(document.forms["frm"]["fname"].value);
-    if (!name)
-        return false;
+
     // 1
     if (gender) {
         // console.log("saved.");
+        let name = validateUsername(document.forms["frm"]["fname"].value);
+        if (!name)
+            return false;
         myStorage.setItem(name, gender);
+
 
     } else {
         // 2
         let nameT = document.getElementById("reqName").innerHTML;
         if (!validateUsername(nameT)) {
-            //todo error
+            return false;
         }
         let genderT = document.getElementById("gender").innerHTML;
+        console.log(genderT);
+
         if (genderT != "male" && genderT != "female") {
-            //todo error
-
+            notify(invalidGenderInfo);
+            return false;
         }
-        // console.log(gender);
         myStorage.setItem(nameT, genderT);
-
-
     }
-
+    notify(GenderInfo);
 }
 
 
@@ -90,23 +91,21 @@ function saveRequest() {
 function validateUsername(name) {
     var regEx = /^[a-z][a-z\s]*$/;
     if (name == null || name == "") {
-        //TODO: error
-
+        notify(ErrInvalidNameLength0);
         return null;
     } else if (name.length > 255) {
-        //TODO: error
+        notify(ErrInvalidNameLength255);
         return null;
 
 
     } else if (!name.match(regEx)) {
-        //TODO: error
+        notify(ErrInvalidNameChar);
         return null;
 
     } else {
-
+        return name;
     }
 
-    return name;
 }
 
 function isSuccessful(status) {
@@ -117,7 +116,7 @@ function restoreFromCache(name) {
     let myStorage = window.localStorage;
     const record = myStorage.getItem(name)
     if (record != null) {
-        //TODO
+        notify(RestoreCache);
         return record;
     }
 
@@ -165,6 +164,18 @@ function clearStoredName() {
     let name = validateUsername(document.forms["frm"]["fname"].value);
     if (!name)
         return false;
+    notify(RemoveCache)
     myStorage.removeItem(name);
 }
-window.localStorage.clear(); // used for remove cache in refresh
+
+
+function notify(message) {
+    document.getElementById("notifier").style.height = "5%";
+    document.getElementById("notifyType").innerHTML = message;
+
+    setTimeout(function() {
+        document.getElementById("notifier").style.height = "0";
+    }, 5000);
+}
+
+// used for remove cache in refresh
