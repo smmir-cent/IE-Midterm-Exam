@@ -1,20 +1,11 @@
-/****** CSS - naming convention: BEM ******/
-
-
 /***
-Layout and Positioning styles have been commented and described.
-Other visual only styles such as color, font-size, background, margin, padding, radius, .... 's comments has been ommited due to their
-impact simplicity. 
-***/
-
-
-/***
-Here i chose a baby yoda background for body with no-repeat and centring it with centter and size value equal to cover
-For centering its inside container, i used flexbox to center container both horizontally and vertically
+    choose background for body with no-repeat and centring it with center and size value equal to cover
+    For centering its inside container
+    used flexbox to center container both horizontally and vertically
 ***/
 
 body {
-    background: url("../images/bg.png") no-repeat center / cover;
+    background: url("../images/bg.jpg") no-repeat center / cover;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -23,15 +14,16 @@ body {
 }
 
 
-/***
-    For container's childern layout, i used a grid system with 2 equally width columns each containing a fraction of empty space.
-    Gap between columns and rows are 20px
-***/
+/*
+    use a grid with 2 equally width columns each containing a fraction of empty space.
+    and Gap between columns and rows are 20px
+    set mellow shadow for transparent
+*/
 
 .container {
     max-width: 1400px;
     width: 60%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
     box-shadow: 0 0 50px rgba(0, 255, 85, 0.4);
     border-radius: 10px;
     padding: 30px;
@@ -40,98 +32,54 @@ body {
     grid-gap: 20px;
 }
 
-.section_header {
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-}
 
-
-/**
-    List items layout is dynamic column flex box.(Just like default implementation but with MUCH more scalability)
-**/
-
-.list__items {
-    padding-left: 15px;
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-}
-
-.list__items--bullet {
-    list-style: disc;
-}
-
-.list__item {
-    margin: 5px;
-    color: white;
-}
-
-.list__link {
-    color: white;
-    padding: 10px;
-}
+/*
+    use flex col to arrange form(first section)
+*/
 
 .form {
     display: flex;
     flex-direction: column;
     color: white;
-    padding: 10px;
+    padding: 20px;
 }
 
-.bt {
-    background-color: #4CAF50;
-    /* Green */
-    border: none;
+
+/*
+    to set section header for color and size and font and bold
+*/
+
+.section_header {
     color: white;
-    padding: 15px 32px;
-    text-align: center;
-    /* text-decoration: none; */
-    /* display: inline-block; */
-    font-size: 16px;
+    font-family: 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 28px;
 }
 
 
-/**
-Pagination with children centered vertically in a row
-**/
+/*  
+    to set section header for color and size and font and bold
+*/
 
-
-/* .pagination {
-    display: flex;
-    align-items: center;
-}
-
-.pagination__button {
-    border-radius: 5px;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: .1s ease-in;
-    outline: none;
-}
-
-.pagination__button:not(:first-child) {
-    margin-left: 10px;
-}
-
-.pagination__button:hover {
-    background-color: rgba(0, 255, 85, 0.7);
+.sec {
+    font-family: Garamond, serif;
     color: white;
+    font-weight: bold;
+    font-size: 22px;
 }
 
-.pagination__button:active {
-    background-color: rgba(0, 255, 85, 0.5);
-}
 
-.pagination__button--disabled {
-    display: none;
-}
+/*
+    for input name and set color,background ,padding and font size
+*/
 
-.pagination__current {
-    margin-left: 10px;
-    color: white;
-} */
+.inName {
+    background: white;
+    padding: .2rem .5rem;
+    font-size: 1.0rem;
+    font-weight: bold;
+    color: black;
+}
 
 
 /** This is error wrapper. 
@@ -154,58 +102,41 @@ Pagination with children centered vertically in a row
 }
 
 
-/**
-Media query for mobile phones and smaller tablets.
-Container will fill the entire page with a single column layout.
-
-Pagination will center horizontally
-**/
-
-@media only screen and (max-width: 767.8px) {
-    .container {
-        width: 100%;
-        height: 100vh;
-        grid-template-columns: 1fr;
-    }
-    .pagination {
-        justify-content: center;
-    }
-}
-
-
 /* 
-    Style for search button, we set the width by it's parent, and change the color to gradient. you can see other styles in this selector. 
+    Style for search button, set the the color to gradient. set cursor to change when mouse moves
+    text to uppercase and color to white
+    set border radius of the button corners
+
 */
 
-.search_wrapper__button {
+.bt {
     display: block;
-    width: 100%;
-    height: 50px;
+    height: 40px;
     border-radius: 25px;
-    margin: 1rem 0;
     font-size: 1.2rem;
-    outline: none;
-    border: none;
-    background-image: linear-gradient(to right, #4c4177 0%, #2a5470 74%);
+    background-image: linear-gradient(to right, #299698 0%, #4419d1 74%);
     cursor: pointer;
     color: white;
-    background-size: 200%;
-    transition: .5s;
     text-transform: uppercase;
 }
 
 
-/* 
-    For better experience (hover mode).
+/*
+    just for saved answer: if name exists in local storage = visible else: hidden 
 */
-
-.search_wrapper__button:hover {
-    background-position: right;
-}
 
 .savedAnswer {
     visibility: hidden;
 }
+
+
+/*
+    nothing happend: height = 0
+    something happend: height = 5
+    background: rgba(0, 0, 0, 0.4); to create Transparent section
+    text to bold and defined size
+    and fixed position to display a noti. in bottom of page
+*/
 
 .notify {
     position: fixed;
@@ -213,19 +144,19 @@ Pagination will center horizontally
     width: 100%;
     height: 0;
     box-sizing: border-box;
-    color: white;
+    color: red;
     text-align: center;
-    background: rgba(0, 0, 0, 0.86);
-    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
     transition: height .2s;
-    align-items: center;
-    align-content: center;
-    alignment: center;
-    justify-content: center;
-    justify-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-#notifyType {
-    margin: 15px;
-    display: inline-block;
+
+/*
+    set response colr to cyan
+*/
+
+.response {
+    color: cyan;
 }

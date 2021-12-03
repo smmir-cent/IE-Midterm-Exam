@@ -9,12 +9,8 @@ const ErrNameNotFound = "Name Not Found."
 const RestoreCache = "restore data from cache"
 const RemoveCache = "remove data from cache"
 
-
-
 //Clear cache when refreshing
 window.localStorage.clear();
-
-
 
 /*
     call submitRequest when click on submit.
@@ -55,8 +51,10 @@ function submitRequest() {
             }
             notify(ErrFetchingInfo + infoReq.status)
         }
-        let response = JSON.parse(infoReq.response);
-        setInfo(response);
+        if (infoReq.response) {
+            let response = JSON.parse(infoReq.response);
+            setInfo(response);
+        }
     }
 }
 
@@ -165,7 +163,8 @@ function restoreFromCache(name) {
 */
 function setInfo(info) {
     document.getElementById("reqName").innerHTML = info['name'];
-    document.getElementById("gender").innerHTML = info['gender'];
+
+    document.getElementById("gender").innerHTML = !info['gender'] ? " no prediction" : info['gender'];
     document.getElementById("prob").innerHTML = info['probability'];
 }
 

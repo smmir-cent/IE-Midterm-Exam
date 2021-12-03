@@ -1,6 +1,3 @@
-<!-- CSS  naming convention: BEM -->
-<!-- JS naming convention: lowrCamelCase -->
-<!-- HTML naming convention: kebab-case -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,12 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gender Finder(S.Mahdi Mirfendereski)</title>
-    <!-- Mayer web css reset applied -->
-    <link rel="stylesheet" href="style/reset.css">
-
-    <!-- Core styles applied -->
     <link rel="stylesheet" href="style/style.css">
-
 </head>
 
 <body>
@@ -22,62 +14,48 @@
         <div class="sec">
             <h2 class="section_header">Mr. or Ms. ?</h2>
             <form name="frm">
-
                 <div class="form">
-                    <label id="user-field">
-                    name:
-                    <input name="fname" type="text">
-                </label>
-                    <input type="radio" class="form" id="genM" name="gender" value="Male">
-                    <label for="Male">Male</label><br>
-                    <input type="radio" class="form" id="genF" name="gender" value="Female">
-                    <label for="Female">Female</label><br>
-                    <div class="form">
-                        <input id="request" name="button" onclick="submitRequest()" class="search_wrapper__button" type="button" value="Submit">
+                    <div>
+                        <label for="fname" id="user-field">name:</label>
+                        <input name="fname" class="inName" type="text">
+
+                    </div>
+                    <div>
+                        <input type="radio" class="form" id="genM" name="gender" value="Male">
+                        <label for="Male">Male</label>
+                        <input type="radio" class="form" id="genF" name="gender" value="Female">
+                        <label for="Female">Female</label>
                     </div>
                     <div class="form">
-                        <input id="request" name="button" onclick="saveRequest()" class="search_wrapper__button" type="button" value="Save">
+                        <input id="request" name="button" onclick="submitRequest()" class="bt" type="button" value="Submit">
+                    </div>
+                    <div class="form">
+                        <input id="request" name="button" onclick="saveRequest()" class="bt" type="button" value="Save">
                     </div>
                 </div>
-
-
-                <!-- <div id="" class="" style="border: solid">
-                    <h3>Saved Answer</h3>
-                    <br>
-                    <p id="">
-                        Requested name: <span id=""></span>
-                    </p>
-                    <p id="">
-                        Gender: <span id=""></span>
-                    </p>
-                    <br>
-                    <button id="" onclick="clearStoredName()">clear</button>
-                </div> -->
-
             </form>
         </div>
         <div class="sec">
             <h2 class="section_header" id="prediction">Prediction</h2>
             <p id="">
-                Requested name: <span id="reqName"></span>
+                Requested name: <span class="response" id="reqName"></span>
             </p>
             <p id="">
-                Gender: <span id="gender"></span>
+                Gender: <span class="response" id="gender"></span>
             </p>
             <p id="">
-                Probability: <span id="prob"></span>
+                Probability: <span class="response" id="prob"></span>
             </p>
             <div id="savedName" class="savedAnswer" style="border: solid">
                 <h3>Saved Answer</h3>
-                <br>
                 <p id="">
-                    Requested name: <span id="SavedreqName"></span>
+                    Requested name: <span class="response" id="SavedreqName"></span>
                 </p>
                 <p id="">
-                    Gender: <span id="Savedgender"></span>
+                    Gender: <span class="response" id="Savedgender"></span>
                 </p>
                 <br>
-                <button id="clear" onclick="clearStoredName()">clear</button>
+                <button class="bt" id="clear" onclick="clearStoredName()">clear</button>
             </div>
         </div>
 
